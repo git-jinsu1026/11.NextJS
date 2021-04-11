@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 
 //4행에서 /movies url로 해주어야한다. 즉 엔트리포인트 역할(라우터 역할)
 @Controller('movies')
@@ -8,6 +8,13 @@ export class MoviesController {
     @Get()
     getAll() {
         return "this will return movies";
+    }
+
+    //서치의 위치가 밑에 있는 GET보다 위에 있어야한다. 그래야만 잘 작동이 된다 
+    // /search?year=2000
+    @Get("search")
+    search(@Query("year") searchingYear: string) {
+        return `We are seacrhing for a moive with a made after: ${searchingYear}`
     }
 
     //키포인트는 id의 값을 받는다
@@ -22,8 +29,8 @@ export class MoviesController {
     }
 
     @Post()
-    create() {
-        return 'This will create a movie';
+    create(@Body() movieData) {
+        return movieData
     }
     //url 에서 id를ㄹ 가져와서 movieId라는 string 타입의 변수에 저장
     @Delete("/:id")
@@ -32,8 +39,13 @@ export class MoviesController {
     }
 
     @Put('/:id')
-    pacth(@Param('id') movieId: string) {
-        return `This will pacth a movice with the id: ${movieId}`
+    pacth(@Param('id') movieId: string, @Body() updateData) {
+        return {
+            updatedMovie: movieId,
+            ...updateData,
+        }
     }
+
+
 
 }
