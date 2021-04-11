@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query } from '@nestjs/common';
+import { CreateMovieDto } from './dto/create-movie.dto';
 import { Movie } from './entities/movie.entity';
 import { MoviesService } from './movies.service';
 
@@ -28,22 +29,22 @@ export class MoviesController {
 
     //@Param('id') 값을 가져온다.
     @Get("/:id")
-    getOne(@Param('id') movieId: string): Movie {
+    getOne(@Param('id') movieId: number): Movie {
         return this.moviesService.getOne(movieId);
     }
 
     @Post()
-    create(@Body() movieData) {
+    create(@Body() movieData: CreateMovieDto) {
         return this.moviesService.create(movieData)
     }
     //url 에서 id를ㄹ 가져와서 movieId라는 string 타입의 변수에 저장
     @Delete("/:id")
-    remove(@Param('id') movieId: string) {
+    remove(@Param('id') movieId: number) {
         return this.moviesService.deleteOne(movieId);
     }
 
     @Patch("/:id")
-    pacth(@Param('id') movieId: string, @Body() updateData) {
+    pacth(@Param('id') movieId: number, @Body() updateData) {
         return this.moviesService.update(movieId, updateData)
     }
 
